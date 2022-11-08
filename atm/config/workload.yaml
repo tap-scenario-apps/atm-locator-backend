@@ -6,6 +6,12 @@ metadata:
     apps.tanzu.vmware.com/workload-type: server
     app.kubernetes.io/part-of: atm
 spec:
+  params:
+  - name: ports
+    value:
+    - port: 80
+      containerPort: 8080
+      name: http
   build:
     env:
       - name: BP_JVM_VERSION
