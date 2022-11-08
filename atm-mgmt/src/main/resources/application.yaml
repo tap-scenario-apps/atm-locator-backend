@@ -1,0 +1,22 @@
+---
+services:
+  location-transation:
+    identifier:  location-translator
+  atm:
+    identifier:  atm
+  branch:
+    identifier:  branch
+    
+---
+
+spring:
+  config.activate.on-profile: local
+  
+services:
+  location-transation:
+    identifier:  'http://localhost:8081'
+  atm:
+    identifier:  'http://localhost:8082'
+  branch:
+    identifier:  branch-mgmt
+

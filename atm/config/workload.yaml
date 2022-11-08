@@ -1,0 +1,18 @@
+apiVersion: carto.run/v1alpha1
+kind: Workload
+metadata:
+  name: atm
+  labels:
+    apps.tanzu.vmware.com/workload-type: server
+    app.kubernetes.io/part-of: atm
+spec:
+  build:
+    env:
+      - name: BP_JVM_VERSION
+        value: "17"
+  source:
+    git:
+      url: https://github.com/tap-scenario-apps/atm-locator-backend
+      ref:
+        branch: main
+    subPath: atm
