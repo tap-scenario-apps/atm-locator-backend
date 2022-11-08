@@ -18,7 +18,7 @@ public class ATMRepository_saveTest extends SpringBaseTest
 		final var atm = new ATM(null, "Test", 0f, 0f, "Test Addr", "Test City", "Test State", "Test Postal", 0d,
 				true, null);
 		
-		final var saveAtm = atmRepo.save(atm).block();
+		final var saveAtm = atmRepo.saveATM(atm).block();
 
 		assertEquals(atm.addr(), saveAtm.addr());
 		assertEquals(atm.branchId(), saveAtm.branchId());

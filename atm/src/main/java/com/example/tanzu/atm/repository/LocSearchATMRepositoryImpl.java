@@ -28,9 +28,9 @@ public class LocSearchATMRepositoryImpl implements LocSearchATMRepository
 	}
 
 	@Override
-	public Mono<ATM> save(ATM atm) 
+	public Mono<ATM> saveATM(ATM atm) 
 	{
-		return customRepo.save(atm);
+		return customRepo.saveATM(atm);
 	}
 	
 }

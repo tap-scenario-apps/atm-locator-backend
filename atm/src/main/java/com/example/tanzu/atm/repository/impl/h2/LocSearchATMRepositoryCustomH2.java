@@ -52,7 +52,7 @@ public class LocSearchATMRepositoryCustomH2 implements LocSearchATMRepositoryCus
 	}
 	
 	@Override
-	public Mono<ATM> save(ATM atm)
+	public Mono<ATM> saveATM(ATM atm)
 	{
 		final var wkt = String.format("POINT(%f %f)", atm.latitude(), atm.longitude());
 		

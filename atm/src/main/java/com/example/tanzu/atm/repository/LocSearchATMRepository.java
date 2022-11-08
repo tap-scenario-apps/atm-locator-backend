@@ -9,5 +9,5 @@ public interface LocSearchATMRepository
 {
 	Flux<ATM> findByLocationDistance(float latitude, float longitude, int radius);
 	
-	Mono<ATM> save(ATM atm);
+	Mono<ATM> saveATM(ATM atm);
 }

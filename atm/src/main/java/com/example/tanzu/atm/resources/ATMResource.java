@@ -72,7 +72,7 @@ public class ATMResource
 			return Mono.error(new ResponseStatusException(HttpStatus.BAD_REQUEST));				
 		}
 	
-		return atmRepo.save(atm);
+		return atmRepo.saveATM(atm);
 	}	
 	
 	@DeleteMapping("{id}") 
