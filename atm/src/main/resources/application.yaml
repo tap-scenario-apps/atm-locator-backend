@@ -1,6 +1,5 @@
+---
 server.port: 8082
-
-impl-postfix: H2Impl
 
 spring:
   flyway:
@@ -10,9 +9,19 @@ spring:
     out-of-order: false
     table: atm-schema-version
     validate-on-migrate: false
-    
+
   datasource:
     url: jdbc:h2:mem:testdb
     driverClassName: org.h2.Driver
     username: sa
     database-platform: org.hibernate.dialect.H2Dialect    
+
+---
+
+spring:
+  config.activate.on-profile: mysql
+ 
+  r2dbc: 
+    properties.sslMode: TRUST  
+    properties.tlsVersion: TLSv1.2   
+    properties.allowPublicKeyRetrieval: true       

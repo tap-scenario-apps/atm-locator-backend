@@ -27,6 +27,23 @@ public class FlywayDataSourceConfiguraion
 	@Primary
 	public HikariDataSource flywayDataSource(DataSourceProperties dataSourceProps) 
 	{
+		var url =  dataSourceProps.getUrl();
+		
+		// Special case for MariaDB properties.
+		// TODO: Find a better solution for this ASAP.
+		if (url.toUpperCase().contains("MARIADB"))
+		{
+			char appendUrlQuery = '?';
+			if (url.contains("appendUrlQuery"))
+				appendUrlQuery = '&';
+			
+			url += appendUrlQuery + "allowPublicKeyRetrieval=true&useSSL=true&trustServerCertificate=true";
+			
+			dataSourceProps.setUrl(url);
+		}
+		
+		
+		
 		return (HikariDataSource) dataSourceProps.initializeDataSourceBuilder()
 				.type(HikariDataSource.class).build();
 	}

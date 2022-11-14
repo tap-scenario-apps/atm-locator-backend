@@ -15,7 +15,7 @@ public class ATMRepository_saveTest extends SpringBaseTest
 	@Test
 	public void testSave() throws Exception
 	{
-		final var atm = new ATM(null, "Test", 0f, 0f, "Test Addr", "Test City", "Test State", "Test Postal", 0d,
+		final var atm = new ATM(null, "Test", 0f, 0f, "Test Addr", "Test City", "Test State", "Test Postal",
 				true, null);
 		
 		final var saveAtm = atmRepo.saveATM(atm).block();

@@ -1,4 +1,4 @@
-package com.example.tanzu.atm.repository.impl.h2;
+package com.example.tanzu.atm.repository.impl.mariadb;
 
 import org.h2gis.functions.spatial.convert.ST_GeomFromText;
 import org.springframework.r2dbc.core.DatabaseClient;
@@ -10,13 +10,17 @@ import com.example.tanzu.atm.repository.impl.LocSearchATMRepositoryCustom;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public class LocSearchATMRepositoryCustomH2 implements LocSearchATMRepositoryCustom
+public class LocSearchATMRepositoryCustomMariaDB implements LocSearchATMRepositoryCustom
 {
-
+	private static final double METERS_TO_MILES = 0.000621371192;
+	
+	private static final double MILES_TO_METERS = 1609.34;
+	
 	protected DatabaseClient client;
 	
 	
-	public LocSearchATMRepositoryCustomH2(DatabaseClient client)
+	
+	public LocSearchATMRepositoryCustomMariaDB(DatabaseClient client)
 	{
 		this.client = client;
 	}	
@@ -26,23 +30,21 @@ public class LocSearchATMRepositoryCustomH2 implements LocSearchATMRepositoryCus
 	{
 		try
 		{
-			final var wkt = String.format("POINT(%f %f)", latitude, longitude);
-			
-			final var geoPt = ST_GeomFromText.toGeometry(wkt, 4326);			
+			final var wkt = String.format("POINT(%f %f)", latitude, longitude);		
 			
 			/*
 			 * Rough geo location distance.  Will get within .1 miles of accuracy in most search which
 			 * is more than adequate for our purposes.
 			 */
-			var geoRadius = (float)radius / 69.0f;
-			
-			return client.sql("SELECT *, ST_Distance(atm.cord, $1) AS dist from atm GROUP BY atm.id HAVING dist <= $2 ")
-			    .bind("$1", geoPt)
-			    .bind("$2", geoRadius)
+			var geoRadius = (float)radius * MILES_TO_METERS;
+		
+			return client.sql("SELECT *, ST_Distance_Sphere(atm.cord, ST_PointFromText(?, 4326)) AS dist from atm GROUP BY atm.id HAVING dist <= ? ")
+			    .bind(0, wkt)
+			    .bind(1, geoRadius)
 			    .map(row -> {
 				  return new ATMD(row.get("id", Long.class), (String)row.get("name", String.class), row.get("latitude", Float.class), 
 						  row.get("longitude", Float.class), row.get("addr", String.class), row.get("city", String.class), row.get("state", String.class), 
-						  row.get("postalCode", String.class), row.get("dist", Double.class) * 69.0, row.get("inDoors", Boolean.class),
+						  row.get("postalCode", String.class), row.get("dist", Double.class) * METERS_TO_MILES, row.get("inDoors", Boolean.class),
 						  row.get("branchId", Long.class));
 				  }).all();
 		}

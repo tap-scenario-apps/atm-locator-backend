@@ -1,6 +1,7 @@
 package com.example.tanzu.atm.repository;
 
 import com.example.tanzu.atm.entity.ATM;
+import com.example.tanzu.atm.entity.ATMD;
 import com.example.tanzu.atm.repository.impl.LocSearchATMRepositoryCustom;
 
 import reactor.core.publisher.Flux;
@@ -22,7 +23,7 @@ public class LocSearchATMRepositoryImpl implements LocSearchATMRepository
 	}
 
 	@Override
-	public Flux<ATM> findByLocationDistance(float latitude, float longitude, int radius) 
+	public Flux<ATMD> findByLocationDistance(float latitude, float longitude, int radius) 
 	{
 		return customRepo.findByLocationDistance(latitude, longitude, radius);
 	}
