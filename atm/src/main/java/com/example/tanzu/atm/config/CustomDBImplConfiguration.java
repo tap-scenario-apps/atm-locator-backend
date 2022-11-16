@@ -10,6 +10,7 @@ import org.springframework.r2dbc.core.DatabaseClient;
 import com.example.tanzu.atm.repository.impl.LocSearchATMRepositoryCustom;
 import com.example.tanzu.atm.repository.impl.h2.LocSearchATMRepositoryCustomH2;
 import com.example.tanzu.atm.repository.impl.mariadb.LocSearchATMRepositoryCustomMariaDB;
+import com.example.tanzu.atm.repository.impl.postgresql.LocSearchATMRepositoryCustomPostgresqlDB;
 
 @Configuration
 public class CustomDBImplConfiguration 
@@ -21,6 +22,14 @@ public class CustomDBImplConfiguration
 	public LocSearchATMRepositoryCustom mariaDBCustomRepoImpl(DatabaseClient client)
 	{
 		return new LocSearchATMRepositoryCustomMariaDB(client);
+	}	
+	
+	@Profile("postgres")
+	@Primary
+	@Bean
+	public LocSearchATMRepositoryCustom postgresqlDBCustomRepoImpl(DatabaseClient client)
+	{
+		return new LocSearchATMRepositoryCustomPostgresqlDB(client);
 	}	
 	
 	@ConditionalOnMissingBean

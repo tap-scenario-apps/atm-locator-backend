@@ -12,9 +12,9 @@ import reactor.core.publisher.Mono;
 
 public class LocSearchATMRepositoryCustomMariaDB implements LocSearchATMRepositoryCustom
 {
-	private static final double METERS_TO_MILES = 0.000621371192;
+	protected static final double METERS_TO_MILES = 0.000621371192;
 	
-	private static final double MILES_TO_METERS = 1609.34;
+	protected static final double MILES_TO_METERS = 1609.34;
 	
 	protected DatabaseClient client;
 	
