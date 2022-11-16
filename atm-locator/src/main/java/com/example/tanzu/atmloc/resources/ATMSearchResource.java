@@ -3,6 +3,7 @@ package com.example.tanzu.atmloc.resources;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,10 +13,29 @@ import org.springframework.web.server.ResponseStatusException;
 import com.example.tanzu.atmloc.model.ATM;
 import com.example.tanzu.atmloc.services.ATMService;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+@OpenAPIDefinition(
+        info = @Info(
+                title = "ATM Locator Service",
+                version = "0.0.1",
+        		description = "Service for searching for ATMs within a given search radius"),
+        tags = @Tag(
+                name = "ATM Locatotr REST API",
+                description = "ATM Locator Search API"))
+@CrossOrigin
 @RestController
 @RequestMapping("atmsearch")
 @Slf4j
@@ -39,6 +59,26 @@ public class ATMSearchResource
 		this.atmSvc = atmSvc;
 	}
 	
+	@Operation(summary = "Get all ATMs within a given searh radius", 
+			description = "Takes query paramter values of names `address`, `city`, `state`, `postalCode`, and `radius`.  Either the city/state or postalCode are required "
+			+ "query parameters.  The `address` can be combined with either city/state or postalCode for finer grainer search resolution.  Radius is measured in miles " +
+					" and defaults to 10 miles if not present",
+		    parameters = {@Parameter(name="longitude", in=ParameterIn.QUERY, required=false, schema=@Schema(type="number", format="float")),
+		    		@Parameter(name="latitude", in=ParameterIn.QUERY, required=false, schema=@Schema(type="number", format="float"))}
+			
+			)
+
+    @ApiResponses({
+        @ApiResponse(
+                responseCode = "200",
+                description = "Returns all ATMs within a given search radius."
+        ),
+        @ApiResponse(
+                responseCode = "400",
+                description = "Required query parameters are missing.",
+                content = @Content(schema = @Schema(hidden = true))
+        )
+    })	
 	@GetMapping()
 	public Flux<ATM> search(@RequestParam(name="address", required=false) String address, 
 			@RequestParam(name="city", required=false) String city, 

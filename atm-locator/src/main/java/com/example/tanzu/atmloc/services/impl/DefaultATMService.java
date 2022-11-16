@@ -1,6 +1,5 @@
 package com.example.tanzu.atmloc.services.impl;
 
-import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import org.springframework.util.StringUtils;
 import com.example.tanzu.atmloc.exchange.ATMClient;
 import com.example.tanzu.atmloc.exchange.ATMSearchResult;
 import com.example.tanzu.atmloc.exchange.BranchClient;
-import com.example.tanzu.atmloc.exchange.BranchSearchResult;
 import com.example.tanzu.atmloc.model.ATM;
 import com.example.tanzu.atmloc.model.Branch;
 import com.example.tanzu.atmloc.model.Location;
@@ -69,11 +67,11 @@ public class DefaultATMService implements ATMService
 				if (result.branchId() == null)
 					return Flux.fromIterable(List.of(resultToModel(result, null)));
 				else
-					return getResultBranch(result);
+					return getBranch(result);
 			});
 	}
 	
-	protected Flux<ATM> getResultBranch(ATMSearchResult res)
+	protected Flux<ATM> getBranch(ATMSearchResult res)
 	{
 		return Flux.from(branchClient.findById(res.branchId())
 			.map(branchRes -> 
@@ -87,14 +85,8 @@ public class DefaultATMService implements ATMService
 			}));
 	}
 	
-	protected ATM resultToModel(ATMSearchResult atmRes, BranchSearchResult branchRes)
-	{
-		
-		final var branchLoc = (branchRes != null) ? new Location(branchRes.latitude(), branchRes.longitude()) : null;
-		
-		final var branch = (branchRes != null) ? new Branch(branchRes.name(), branchLoc, branchRes.addr(), branchRes.city(), branchRes.state(), 
-				branchRes.postalCode(), branchRes.distance(), Collections.emptyList()) : null;
-		
+	protected ATM resultToModel(ATMSearchResult atmRes, Branch branch)
+	{		
 		final var atmLoc = new Location(atmRes.latitude(), atmRes.longitude());
 		
 		return new ATM(atmRes.id(), atmRes.name(), atmLoc, atmRes.addr(), atmRes.city(), atmRes.state(), 

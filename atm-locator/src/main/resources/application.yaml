@@ -1,4 +1,7 @@
 ---
+server:
+  forward-headers-strategy: framework
+
 services:
   location-transation:
     identifier:  location-translator
@@ -6,7 +9,11 @@ services:
     identifier:  atm
   branch:
     identifier:  branch
-    
+
+springdoc:
+  packages-to-scan: com.example.tanzu.atmloc.resources
+  api-docs.path: '/api-docs'
+  
 ---
 
 spring:
@@ -18,4 +25,4 @@ services:
   atm:
     identifier:  'http://localhost:8082'
   branch:
-    identifier:  branch-mgmt
+    identifier:  'http://localhost:8085'

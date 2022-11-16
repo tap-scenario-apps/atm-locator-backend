@@ -2,10 +2,10 @@ apiVersion: carto.run/v1alpha1
 kind: Workload
 metadata:
   name: atm-locator
-  namespace: workloads
   labels:
     apps.tanzu.vmware.com/workload-type: web
     app.kubernetes.io/part-of: atm-locator
+    apis.apps.tanzu.vmware.com/register-api: "true"
 spec:
   build:
     env:
@@ -14,7 +14,15 @@ spec:
   params:
   - name: annotations
     value:
-      autoscaling.knative.dev/minScale: "1"
+        autoscaling.knative.dev/minScale: "1"
+  - name: api_descriptor
+    value:
+      type: openapi
+      location: 
+        path: "/api-docs"
+      owner: atm
+      system: atm
+      description: ATM Locator API
   source:
     git:
       url: https://github.com/tap-scenario-apps/atm-locator-backend
