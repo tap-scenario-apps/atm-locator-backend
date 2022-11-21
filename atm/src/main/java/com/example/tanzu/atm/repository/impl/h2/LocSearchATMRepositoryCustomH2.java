@@ -13,6 +13,8 @@ import reactor.core.publisher.Mono;
 public class LocSearchATMRepositoryCustomH2 implements LocSearchATMRepositoryCustom
 {
 
+	protected static final float RADIUS_SEARCH_DIVISOR = 69.0f;
+	
 	protected DatabaseClient client;
 	
 	
@@ -30,21 +32,18 @@ public class LocSearchATMRepositoryCustomH2 implements LocSearchATMRepositoryCus
 			
 			final var geoPt = ST_GeomFromText.toGeometry(wkt, 4326);			
 			
+			final var mapper = new H2ATMMapper();
+			
 			/*
 			 * Rough geo location distance.  Will get within .1 miles of accuracy in most search which
 			 * is more than adequate for our purposes.
 			 */
-			var geoRadius = (float)radius / 69.0f;
+			var geoRadius = (float)radius / RADIUS_SEARCH_DIVISOR;
 			
 			return client.sql("SELECT *, ST_Distance(atm.cord, $1) AS dist from atm GROUP BY atm.id HAVING dist <= $2 ")
 			    .bind("$1", geoPt)
 			    .bind("$2", geoRadius)
-			    .map(row -> {
-				  return new ATMD(row.get("id", Long.class), (String)row.get("name", String.class), row.get("latitude", Float.class), 
-						  row.get("longitude", Float.class), row.get("addr", String.class), row.get("city", String.class), row.get("state", String.class), 
-						  row.get("postalCode", String.class), row.get("dist", Double.class) * 69.0, row.get("inDoors", Boolean.class),
-						  row.get("branchId", Long.class));
-				  }).all();
+			    .map(mapper::apply).all();
 		}
 		catch (Exception e)
 		{

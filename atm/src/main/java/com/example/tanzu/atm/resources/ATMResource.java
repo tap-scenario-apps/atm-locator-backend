@@ -186,7 +186,7 @@ public class ATMResource
 	
 	protected Flux<ATMModel> getATMs(Flux<ATMD> search)
 	{
-		return search.flatMap(atm -> 
+		return search.collectList().flatMapMany(Flux::fromIterable).flatMap(atm -> 
 		{
 			return atmNoteRepo.findByAtmId(atm.id())
 				.collectList()

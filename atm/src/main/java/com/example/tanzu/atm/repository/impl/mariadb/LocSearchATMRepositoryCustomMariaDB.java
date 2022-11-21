@@ -12,13 +12,11 @@ import reactor.core.publisher.Mono;
 
 public class LocSearchATMRepositoryCustomMariaDB implements LocSearchATMRepositoryCustom
 {
-	protected static final double METERS_TO_MILES = 0.000621371192;
 	
 	protected static final double MILES_TO_METERS = 1609.34;
 	
 	protected DatabaseClient client;
-	
-	
+
 	
 	public LocSearchATMRepositoryCustomMariaDB(DatabaseClient client)
 	{
@@ -32,6 +30,8 @@ public class LocSearchATMRepositoryCustomMariaDB implements LocSearchATMReposito
 		{
 			final var wkt = String.format("POINT(%f %f)", latitude, longitude);		
 			
+			final var mapper = new MariaDBATMMapper();
+			
 			/*
 			 * Rough geo location distance.  Will get within .1 miles of accuracy in most search which
 			 * is more than adequate for our purposes.
@@ -40,13 +40,8 @@ public class LocSearchATMRepositoryCustomMariaDB implements LocSearchATMReposito
 		
 			return client.sql("SELECT *, ST_Distance_Sphere(atm.cord, ST_PointFromText(?, 4326)) AS dist from atm GROUP BY atm.id HAVING dist <= ? ")
 			    .bind(0, wkt)
-			    .bind(1, geoRadius)
-			    .map(row -> {
-				  return new ATMD(row.get("id", Long.class), (String)row.get("name", String.class), row.get("latitude", Float.class), 
-						  row.get("longitude", Float.class), row.get("addr", String.class), row.get("city", String.class), row.get("state", String.class), 
-						  row.get("postalCode", String.class), row.get("dist", Double.class) * METERS_TO_MILES, row.get("inDoors", Boolean.class),
-						  row.get("branchId", Long.class));
-				  }).all();
+			    .bind(1, geoRadius)			    
+			    .map(mapper::apply).all();
 		}
 		catch (Exception e)
 		{
