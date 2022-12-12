@@ -34,6 +34,8 @@ public class LocationTranslationResource
 			@RequestParam(name="state", required=false) String state, @RequestParam(name="postalCode", required=false) String postalCode)
 	{
 		
+		log.info("Searching for geo coordinates");
+		
 		if (!isValidQueryParams(city, state, postalCode))
 		{
 			log.error("Missing required search paramater.");

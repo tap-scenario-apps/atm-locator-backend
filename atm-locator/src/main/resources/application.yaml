@@ -10,6 +10,12 @@ services:
   branch:
     identifier:  branch
 
+spring:
+  cache:
+    cache-names: geolocation
+    caffeine:
+      spec: maximumSize=100,expireAfterAccess=3600s
+
 springdoc:
   packages-to-scan: com.example.tanzu.atmloc.resources
   api-docs.path: '/api-docs'
