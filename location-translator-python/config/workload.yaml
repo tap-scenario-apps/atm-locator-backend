@@ -20,4 +20,4 @@ spec:
       url: https://github.com/tap-scenario-apps/atm-locator-backend
       ref:
         branch: main
-    subPath: location-translator
+    subPath: location-translator-python

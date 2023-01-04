@@ -45,7 +45,7 @@ def loc():
         return Response(content_type='application/json', response=json.dumps(res), status=200)
 
     else:
-        
+
         return Response(status=501)
 
 
@@ -59,16 +59,23 @@ def main():
     try:
 
         geocodio_api_key = os.environ['GEOCODIO_API_KEY']
-
+        
     except KeyError:
         logging.error('Env variable GEOCODIO_API_KEY missing')
         return
 
+    try:
+
+        geocodio_port = os.environ['GEOCODIO_PORT']
     
+    except KeyError:
+        geocodio_port = 8080
+
+
     global _g_geocodioLocator
     _g_geocodioLocator = gcl.GeocodioLocator(geocodio_api_key)
 
-    _g_app.run(host = '0.0.0.0', port=8080, debug=True)
+    _g_app.run(host = '0.0.0.0', port=geocodio_port, debug=True)
     
 
     logging.info('Finished')

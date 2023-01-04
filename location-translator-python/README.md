@@ -27,10 +27,14 @@ This guide documents the steps required to run the python implementation of the 
     ```shell
     $ export GEOCODIO_API_KEY=<your api key>
     ```
+    If you'd like to change the default listening port which is 8080 do the following:
+    ```shell
+    $ export GEOCODIO_PORT=<listening Port>
+    ```
     then run:
     ```shell
     $ python3 src/apiserver.py
     ```
 
-    At this point API server is running and listening on port 8080
+    At this point API server is running and listening on GEOCODIO_PORT or the default port 8080
 
