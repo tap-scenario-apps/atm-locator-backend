@@ -17,7 +17,7 @@ spec:
     value: DEMO
   source:      
     git:
-      url: https://gitlab.eng.vmware.com/tap-scenario-apps/atm-locator-backend
+      url: https://github.com/tap-scenario-apps/atm-locator-backend
       ref:
         branch: main
     subPath: location-translator
