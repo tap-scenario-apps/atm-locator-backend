@@ -28,10 +28,21 @@ import com.example.tanzu.atm.repository.ATMDetailRepository;
 import com.example.tanzu.atm.repository.ATMNoteRepository;
 import com.example.tanzu.atm.repository.ATMRepository;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+@OpenAPIDefinition(
+        info = @Info(
+                title = "ATM Service",
+                version = "0.0.1",
+        		description = "Service for searching for ATMs within a given a geograpical coordiate and a search radius"),
+        tags = @Tag(
+                name = "ATM REST API",
+                description = "ATM Search API"))
 @RestController
 @RequestMapping("atm")
 @Slf4j

@@ -25,9 +25,20 @@ import com.example.tanzu.branch.repository.BranchDetailRepository;
 import com.example.tanzu.branch.repository.BranchNoteRepository;
 import com.example.tanzu.branch.repository.BranchRepository;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
 
+@OpenAPIDefinition(
+        info = @Info(
+                title = "Branch Service",
+                version = "0.0.1",
+        		description = "Service for maintaining for Branches"),
+        tags = @Tag(
+                name = "BRANCH REST API",
+                description = "Branch Search API"))
 @RestController
 @RequestMapping("branch")
 @Slf4j

@@ -12,9 +12,20 @@ import org.springframework.web.server.ResponseStatusException;
 import com.example.tanzu.loctrans.model.Location;
 import com.example.tanzu.loctrans.resources.service.GeoLocator;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
 
+@OpenAPIDefinition(
+        info = @Info(
+                title = "Location Translator Service",
+                version = "0.0.1",
+        		description = "Service for translation a search location to geolocation coordinates"),
+        tags = @Tag(
+                name = "Location Translator REST API",
+                description = "Location Translator Search API"))
 @RestController
 @RequestMapping("loc")
 @Slf4j

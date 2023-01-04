@@ -20,10 +20,10 @@ create table atmNotes(
   id                   bigint          NOT NULL AUTO_INCREMENT PRIMARY KEY, 
   note                 VARCHAR(1024)   NOT NULL,
   atmId                bigint          NOT NULL);
-create index IDX_ATMNOTES_ATMID ON atmNotes(atmId);
+create index IDX_ATMNOTES_ATMID ON atmnotes(atmId);
  
 create table atmDetails(
   id                   bigint          NOT NULL AUTO_INCREMENT PRIMARY KEY, 
   detail               VARCHAR(1024)   NOT NULL,
   atmId                bigint          NOT NULL);
-create index IDX_ATMDETAILS_ATMID ON atmDetails(atmId);
+create index IDX_ATMDETAILS_ATMID ON atmdetails(atmId);
