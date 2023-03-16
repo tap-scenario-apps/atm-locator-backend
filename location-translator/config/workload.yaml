@@ -5,6 +5,7 @@ metadata:
   labels:
     apps.tanzu.vmware.com/workload-type: server
     app.kubernetes.io/part-of: location-translator
+    apps.tanzu.vmware.com/has-tests: "true"  
 spec:
   params:
   - name: ports
