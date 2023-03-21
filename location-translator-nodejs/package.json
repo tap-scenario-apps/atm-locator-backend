@@ -1,0 +1,16 @@
+{
+  "name": "location-translator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "apiserver.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Timothy Hitchener",
+  "license": "ISC",
+  "dependencies": {
+    "dotenvrc": "^1.0.1",
+    "express": "^4.18.2",
+    "geocodio-library-node": "^1.5.0"
+  }
+}

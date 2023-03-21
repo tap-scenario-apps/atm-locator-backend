@@ -1,0 +1,25 @@
+apiVersion: carto.run/v1alpha1
+kind: Workload
+metadata:
+  name: location-translator
+  labels:
+    apps.tanzu.vmware.com/workload-type: server
+    app.kubernetes.io/part-of: location-translator
+    apps.tanzu.vmware.com/has-tests: "true"
+spec:
+  params:
+  - name: ports
+    value:
+    - port: 80
+      containerPort: 8080
+      name: http
+  build:
+    env:
+      - name: BP_LAUNCHPOINT
+        value: "./src/apiserver.js"      
+  source:
+    git:
+      url: https://github.com/tap-scenario-apps/atm-locator-backend
+      ref:
+        branch: main
+    subPath: location-translator-nodejs
