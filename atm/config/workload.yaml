@@ -6,13 +6,16 @@ metadata:
     apps.tanzu.vmware.com/workload-type: server
     app.kubernetes.io/part-of: atm
     apps.tanzu.vmware.com/has-tests: "true"  
+    apps.tanzu.vmware.com/auto-configure-actuators: "true"
+    networking.knative.dev/visibility: cluster-local
 spec:
   params:
-  - name: ports
+  - name: annotations
     value:
-    - port: 80
-      containerPort: 8080
-      name: http
+        autoscaling.knative.dev/minScale: "1"    
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8081"
+        prometheus.io/path: "/actuator/prometheus"    
   build:
     env:
       - name: BP_JVM_VERSION

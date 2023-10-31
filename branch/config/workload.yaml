@@ -5,8 +5,6 @@ metadata:
   labels:
     apps.tanzu.vmware.com/workload-type: server
     app.kubernetes.io/part-of: branch
-    apps.tanzu.vmware.com/auto-configure-actuators: "true"
-    apps.tanzu.vmware.com/has-tests: "true"      
 spec:
   params:
   - name: ports

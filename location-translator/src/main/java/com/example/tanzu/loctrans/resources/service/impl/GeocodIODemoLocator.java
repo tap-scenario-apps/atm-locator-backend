@@ -55,11 +55,14 @@ public class GeocodIODemoLocator implements GeoLocator
 						  */
 						 WebClientResponseException ex = (WebClientResponseException)e;
 						 if (ex.getStatusCode() == HttpStatus.UNPROCESSABLE_ENTITY)
+						 {
+							 log.error("Error translating ATM location due to an unprocessable entity.", e.getMessage());
 							 return Mono.empty();
+						 }
 					 }
 					 
 					  
-	    	    	 log.error("Error translating ATM location.", e);
+	    	    	 log.error("Error translating ATM location: {}  {}.", e.getMessage(), e.getCause());
 	    	    	 return Mono.error(new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR));					  
 				  });
 	}
